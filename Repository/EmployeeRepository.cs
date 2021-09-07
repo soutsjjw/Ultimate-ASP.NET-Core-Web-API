@@ -20,7 +20,6 @@ namespace Repository
 
         public PagedList<Employee> GetEmployees(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
         {
-            // 適合資料量小的專案
             var employees = FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
                 .OrderBy(e => e.Name);
 
@@ -42,16 +41,12 @@ namespace Repository
 
         public async Task<PagedList<Employee>> GetEmployeesAsync(Guid companyId, EmployeeParameters employeeParameters, bool trackChanges)
         {
-            // 適合資料量大的專案
-            var employees = await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges)
+            var employees = await FindByCondition(e => e.CompanyId.Equals(companyId)
+                && (e.Age >= employeeParameters.MinAge && e.Age <= employeeParameters.MaxAge), trackChanges)
                 .OrderBy(e => e.Name)
-                .Skip((employeeParameters.PageNumber - 1) * employeeParameters.PageSize)
-                .Take(employeeParameters.PageSize)
                 .ToListAsync();
 
-            var count = await FindByCondition(e => e.CompanyId.Equals(companyId), trackChanges).CountAsync();
-
-            return new PagedList<Employee>(employees, count, employeeParameters.PageNumber, employeeParameters.PageSize);
+            return PagedList<Employee>.ToPagedList(employees, employeeParameters.PageNumber, employeeParameters.PageSize);
         }
 
         public async Task<Employee> GetEmployeeAsync(Guid companyId, Guid id, bool trackChanges) =>
