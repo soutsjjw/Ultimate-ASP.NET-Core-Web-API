@@ -5,6 +5,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,10 @@ namespace CompanyEmployees
 
             if (context.Object is IEnumerable<CompanyDto>)
             {
+                PropertyInfo[] properties = typeof(CompanyDto).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+                buffer.AppendLine(String.Join(",", properties.Select(x => x.Name).ToArray()));
+
                 foreach (var company in (IEnumerable<CompanyDto>)context.Object)
                 {
                     FormatCsv(buffer, company);
