@@ -22,7 +22,7 @@ namespace CompanyEmployees.ActionFilters
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var method = context.HttpContext.Request.Method;
-            var trackChanges = (method.Equals("PUT") || method.Equals("PATCH")) ? true : false;
+            var trackChanges = (method.Equals("PUT") || method.Equals("PATCH"));
             var companyId = (Guid)context.ActionArguments["id"];
             var company = await _repositoy.Company.GetCompanyAsync(companyId, false);
 

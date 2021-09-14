@@ -15,12 +15,7 @@ namespace Entities.Models
 {
     public class Entity : DynamicObject, IXmlSerializable, IDictionary<string, object>
     {
-        Dictionary<string, object> dictionary;
-
-        public Entity()
-        {
-            dictionary = new Dictionary<string, object>();
-        }
+        private readonly Dictionary<string, object> dictionary = new Dictionary<string, object>();
 
         #region IDictionary<string, object>
 
@@ -44,7 +39,7 @@ namespace Entities.Models
 
         public ICollection<object> Values => ((IDictionary<string, object>)dictionary).Values;
 
-        public int Count => dictionary.Count();
+        public int Count => dictionary.Count;
 
         public bool IsReadOnly => ((IDictionary<string, object>)dictionary).IsReadOnly;
 
@@ -119,12 +114,9 @@ namespace Entities.Models
 
         public void WriteXml(XmlWriter writer)
         {
-            lock (this)
+            foreach (var item in dictionary)
             {
-                foreach(var item in dictionary)
-                {
-                    writer.WriteElementString(item.Key, item.Value?.ToString());
-                }
+                writer.WriteElementString(item.Key, item.Value?.ToString());
             }
         }
 
@@ -136,7 +128,7 @@ namespace Entities.Models
 
             if (value.GetType() == typeof(List<Link>))
             {
-                foreach(var val in value as List<Link>)
+                foreach (var val in value as List<Link>)
                 {
                     writer.WriteStartElement(nameof(Link));
                     WriteLinksToXml(nameof(val.Href), val.Href, writer);

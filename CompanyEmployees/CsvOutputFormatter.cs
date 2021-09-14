@@ -35,13 +35,14 @@ namespace CompanyEmployees
             var response = context.HttpContext.Response;
             var buffer = new StringBuilder();
 
-            if (context.Object is IEnumerable<CompanyDto>)
+            var companyDtos = context.Object as IEnumerable<CompanyDto>;
+            if (companyDtos != null)
             {
                 PropertyInfo[] properties = typeof(CompanyDto).GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
                 buffer.AppendLine(String.Join(",", properties.Select(x => x.Name).ToArray()));
 
-                foreach (var company in (IEnumerable<CompanyDto>)context.Object)
+                foreach (var company in companyDtos)
                 {
                     FormatCsv(buffer, company);
                 }

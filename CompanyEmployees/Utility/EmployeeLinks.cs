@@ -52,7 +52,7 @@ namespace CompanyEmployees.Utility
         {
             var employeeDtoList = employeesDto.ToList();
 
-            for (var index = 0; index < employeeDtoList.Count(); index++)
+            for (var index = 0; index < employeeDtoList.Count; index++)
             {
                 var employeeLinks = CreateLinksForEmployee(httpContext, companyId, employeeDtoList[index].Id, fields);
                 shapedEmployees[index].Add("Links", employeeLinks);

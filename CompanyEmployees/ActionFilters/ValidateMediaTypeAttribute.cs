@@ -33,6 +33,7 @@ namespace CompanyEmployees.ActionFilters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
+            // Do nothing 
         }
     }
 }

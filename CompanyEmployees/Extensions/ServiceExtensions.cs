@@ -21,9 +21,11 @@ namespace CompanyEmployees.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
-                    builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+                {
+                    builder.WithOrigins("https://localhost:5001")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
             });
 
         public static void ConfigureIISIntegration(this IServiceCollection services) =>
