@@ -1,4 +1,4 @@
-using CompanyEmployees.ActionFilters;
+﻿using CompanyEmployees.ActionFilters;
 using CompanyEmployees.Extensions;
 using CompanyEmployees.Utility;
 using Contracts;
@@ -41,11 +41,16 @@ namespace CompanyEmployees
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
             services.ConfigureVersioning();
+            services.ConfigureResponseCaching();
+            services.ConfigureHttpCacheHeaders();
 
             services.AddControllers(config =>
             {
+                // 是否遵守 Accept 標頭
                 config.RespectBrowserAcceptHeader = true;
+                // 如果伺服器端不支持HTTP request中Accept的格式值，則回傳HTTP 406 Not Acceptable
                 config.ReturnHttpNotAcceptable = true;
+                config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
             }).AddNewtonsoftJson()
             .AddXmlDataContractSerializerFormatters()
             .AddCustomCSVFormatter();
@@ -95,6 +100,9 @@ namespace CompanyEmployees
             {
                 ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
             });
+
+            app.UseResponseCaching();
+            app.UseHttpCacheHeaders();
 
             app.UseRouting();
 
