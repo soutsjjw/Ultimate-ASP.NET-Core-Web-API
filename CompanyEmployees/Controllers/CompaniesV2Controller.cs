@@ -20,7 +20,8 @@ namespace CompanyEmployees.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [MapToApiVersion("2.0")]
+        [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
             var compaies = await _repository.Company.GetAllCompaniesAsync(trackChanges: false);

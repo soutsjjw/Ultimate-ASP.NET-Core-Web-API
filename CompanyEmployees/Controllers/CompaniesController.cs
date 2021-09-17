@@ -31,6 +31,7 @@ namespace CompanyEmployees.Controllers
             _mapper = mapper;
         }
 
+        [MapToApiVersion("1.0")]
         [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
