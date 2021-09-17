@@ -104,6 +104,16 @@ namespace CompanyEmployees
             services.AddHttpContextAccessor();
 
             #endregion 速率限制和節流
+
+            #region Identity
+
+            services.AddAuthentication();
+            services.ConfigureIdentity();
+            services.ConfigureJWT(Configuration);
+
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -146,6 +156,7 @@ namespace CompanyEmployees
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
