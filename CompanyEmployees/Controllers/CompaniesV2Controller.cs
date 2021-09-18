@@ -11,6 +11,7 @@ namespace CompanyEmployees.Controllers
     [ApiVersion("2.0", Deprecated = true)]
     [Route("api/companies")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v2")]
     public class CompaniesV2Controller : ControllerBase
     {
         private readonly IRepositoryManager _repository;
@@ -20,7 +21,6 @@ namespace CompanyEmployees.Controllers
             _repository = repository;
         }
 
-        [MapToApiVersion("2.0")]
         [HttpGet(Name = "GetCompanies")]
         public async Task<IActionResult> GetCompanies()
         {
